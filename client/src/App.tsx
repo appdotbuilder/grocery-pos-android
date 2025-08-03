@@ -68,6 +68,8 @@ function App() {
   const [isVariantDialogOpen, setIsVariantDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [selectedProductForVariant, setSelectedProductForVariant] = useState<number | null>(null);
+  const [selectedProductForVariantSelection, setSelectedProductForVariantSelection] = useState<Product | null>(null);
+  const [isVariantSelectionDialogOpen, setIsVariantSelectionDialogOpen] = useState(false);
 
   // Form states
   const [productForm, setProductForm] = useState<CreateProductInput>({
@@ -447,7 +449,11 @@ function App() {
                           key={product.id}
                           variant="outline"
                           className="h-auto p-3 flex flex-col items-start"
-                          onClick={() => addToCart(product)}
+                          onClick={() => {
+                            setSelectedProductForVariantSelection(product);
+                            setIsVariantSelectionDialogOpen(true);
+                            loadPriceVariants(product.id); // Load variants when opening the dialog
+                          }}
                         >
                           <span className="font-medium text-sm">{product.name}</span>
                           <span className="text-green-600 font-bold">{product.base_price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
@@ -1180,6 +1186,77 @@ function App() {
                     </div>
                   ))}
                 </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Price Selection Dialog (for POS) */}
+        <Dialog open={isVariantSelectionDialogOpen} onOpenChange={setIsVariantSelectionDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Pilih Varian Produk</DialogTitle>
+              <DialogDescription>
+                Pilih harga atau varian untuk {selectedProductForVariantSelection?.name}.
+              </DialogDescription>
+            </DialogHeader>
+
+            {selectedProductForVariantSelection && (
+              <div className="space-y-4 pt-4">
+                {/* Base Price Option */}
+                <div className="flex items-center justify-between p-2 border rounded">
+                  <div>
+                    <span className="font-medium">Harga Dasar</span>
+                    <div className="text-sm text-gray-500">Stok: {selectedProductForVariantSelection.stock_quantity}</div>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      addToCart(selectedProductForVariantSelection); // No variant selected, use base price
+                      setIsVariantSelectionDialogOpen(false);
+                    }}
+                  >
+                    Tambah - {selectedProductForVariantSelection.base_price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+                  </Button>
+                </div>
+
+                {/* Price Variants */}
+                {priceVariants[selectedProductForVariantSelection.id]?.length > 0 && (
+                  <>
+                    <h4 className="font-medium mb-2">Varian Lain:</h4>
+                    <div className="space-y-2">
+                      {priceVariants[selectedProductForVariantSelection.id].map((variant: PriceVariant) => (
+                        <div key={variant.id} className="flex items-center justify-between p-2 border rounded">
+                          <div>
+                            <span className="font-medium">{variant.variant_name}</span>
+                            {variant.is_default && (
+                              <Badge variant="secondary" className="ml-2">Default</Badge>
+                            )}
+                          </div>
+                          <Button
+                            size="sm"
+                            onClick={() => {
+                              addToCart(selectedProductForVariantSelection, variant);
+                              setIsVariantSelectionDialogOpen(false);
+                            }}
+                          >
+                            Tambah - {variant.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                <DialogFooter>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsVariantSelectionDialogOpen(false)}
+                  >
+                    Batal
+                  </Button>
+                </DialogFooter>
               </div>
             )}
           </DialogContent>
