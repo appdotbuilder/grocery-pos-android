@@ -392,8 +392,8 @@ function App() {
       <div className="container mx-auto p-4">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">🛒 GroceryPOS Pro</h1>
-          <p className="text-gray-600">Modern Point of Sale System for Grocery Stores</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">🛒 Toko Iis</h1>
+          <p className="text-gray-600">Sistem Kasir Modern untuk Toko Iis</p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
