@@ -450,7 +450,7 @@ function App() {
                           onClick={() => addToCart(product)}
                         >
                           <span className="font-medium text-sm">{product.name}</span>
-                          <span className="text-green-600 font-bold">${product.base_price.toFixed(2)}</span>
+                          <span className="text-green-600 font-bold">Rp{product.base_price.toFixed(2)}</span>
                           <span className="text-xs text-gray-500">Stock: {product.stock_quantity}</span>
                         </Button>
                       ))}
@@ -480,7 +480,7 @@ function App() {
                                   <span className="text-sm text-gray-600 ml-2">({item.variant.variant_name})</span>
                                 )}
                                 <div className="text-sm text-gray-500">
-                                  ${(item.variant?.price || item.product.base_price).toFixed(2)} each
+                                  Rp{(item.variant?.price || item.product.base_price).toFixed(2)} each
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
@@ -523,7 +523,7 @@ function App() {
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span>Subtotal:</span>
-                        <span>${(calculateCartTotal() - taxAmount + discountAmount).toFixed(2)}</span>
+                        <span>Rp{(calculateCartTotal() - taxAmount + discountAmount).toFixed(2)}</span>
                       </div>
                       
                       <div className="flex justify-between items-center">
@@ -560,7 +560,7 @@ function App() {
                       
                       <div className="flex justify-between font-bold text-lg">
                         <span>Total:</span>
-                        <span className="text-green-600">${calculateCartTotal().toFixed(2)}</span>
+                        <span className="text-green-600">Rp{calculateCartTotal().toFixed(2)}</span>
                       </div>
                     </div>
 
@@ -598,7 +598,7 @@ function App() {
                       onClick={handleCheckout}
                       disabled={cart.length === 0 || isLoading}
                     >
-                      {isLoading ? 'Processing...' : `Complete Sale - $${calculateCartTotal().toFixed(2)}`}
+                      {isLoading ? 'Processing...' : `Complete Sale - Rp${calculateCartTotal().toFixed(2)}`}
                     </Button>
                   </CardContent>
                 </Card>
@@ -623,7 +623,7 @@ function App() {
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Add New Category</DialogTitle>
+                      <DialogTitle>Tambah Kategori Baru</DialogTitle>
                     </DialogHeader>
                     <form onSubmit={handleCreateCategory} className="space-y-4">
                       <div>
@@ -669,7 +669,7 @@ function App() {
                   <DialogContent className="max-w-2xl">
                     <DialogHeader>
                       <DialogTitle>
-                        {editingProduct ? 'Edit Product' : 'Add New Product'}
+                        {editingProduct ? 'Edit Produk' : 'Tambah Produk Baru'}
                       </DialogTitle>
                     </DialogHeader>
                     <form onSubmit={editingProduct ? handleUpdateProduct : handleCreateProduct} className="space-y-4">
@@ -834,7 +834,7 @@ function App() {
                           {categories.find((c: Category) => c.id === product.category_id)?.name || 'Uncategorized'}
                         </TableCell>
                         <TableCell className="font-medium text-green-600">
-                          ${product.base_price.toFixed(2)}
+                          Rp{product.base_price.toFixed(2)}
                         </TableCell>
                         <TableCell>
                           <Badge variant={product.stock_quantity > 10 ? 'default' : 'destructive'}>
@@ -929,7 +929,7 @@ function App() {
                             {transaction.transaction_date.toLocaleDateString()}
                           </TableCell>
                           <TableCell className="font-medium text-green-600">
-                            ${transaction.final_amount.toFixed(2)}
+                            Rp{transaction.final_amount.toFixed(2)}
                           </TableCell>
                           <TableCell>
                             <Badge>
@@ -1031,7 +1031,7 @@ function App() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-green-600">
-                      ${salesReport.total_revenue.toFixed(2)}
+                      Rp{salesReport.total_revenue.toFixed(2)}
                     </div>
                   </CardContent>
                 </Card>
@@ -1053,7 +1053,7 @@ function App() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-orange-600">
-                      ${salesReport.average_transaction_value.toFixed(2)}
+                      Rp{salesReport.average_transaction_value.toFixed(2)}
                     </div>
                   </CardContent>
                 </Card>
@@ -1085,7 +1085,7 @@ function App() {
                         </div>
                         <div className="text-right">
                           <div className="font-bold text-green-600">
-                            ${product.revenue.toFixed(2)}
+                            Rp{product.revenue.toFixed(2)}
                           </div>
                           <div className="text-sm text-gray-500">revenue</div>
                         </div>
@@ -1102,9 +1102,9 @@ function App() {
         <Dialog open={isVariantDialogOpen} onOpenChange={setIsVariantDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Manage Price Variants</DialogTitle>
+              <DialogTitle>Kelola Varian Harga</DialogTitle>
               <DialogDescription>
-                Add different pricing options for this product (e.g., Small, Medium, Large)
+                Tambahkan opsi harga berbeda untuk produk ini (misalnya, Kecil, Sedang, Besar)
               </DialogDescription>
             </DialogHeader>
             
@@ -1175,7 +1175,7 @@ function App() {
                         )}
                       </div>
                       <span className="font-bold text-green-600">
-                        ${variant.price.toFixed(2)}
+                        Rp{variant.price.toFixed(2)}
                       </span>
                     </div>
                   ))}
